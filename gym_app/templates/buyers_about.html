@@ -1,0 +1,192 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="{% static 'gym logo.png' %}">
+  <title>Power House Fitness - Shop</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- AOS + Boxicons -->
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+  <!-- Custom CSS -->
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+
+    .navbar-brand span {
+      color: #198754;
+      font-weight: bold;
+    }
+
+    .home {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 60px 0;
+    }
+
+    .home img {
+      max-width: 100%;
+      border-radius: 12px;
+    }
+
+    .heading {
+      text-align: center;
+      font-weight: bold;
+      margin-bottom: 2rem;
+    }
+
+
+    footer {
+      background: #222;
+      color: #ddd;
+      padding: 20px;
+      text-align: center;
+    }
+
+    footer .social a {
+      color: #ddd;
+      margin: 0 10px;
+      font-size: 24px;
+    }
+
+    footer .social a:hover {
+      color: #198754;
+    }
+
+    .contact-list i {
+      color: #198754;
+      margin-right: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navbar -->
+   <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-4 fixed-top">
+        <a class="navbar-brand fw-bold" href="/">Power House <span>Fitness</span></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav me-3">
+                <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">About</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Services
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="servicesDropdown">
+                        <li><a class="dropdown-item" href="/buyerproduct">All Products</a></li>
+                        <li><a class="dropdown-item" href="/threadwalk">Threadmills & Walkpads</a></li>
+                        <li><a class="dropdown-item" href="/gymweight">Gym Weights</a></li>
+                        <li><a class="dropdown-item" href="/personalgears">Personal Gears</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="/contact">Contact us</a></li>
+            </ul>
+
+    <!-- Right Side Buttons -->
+    <div>
+      {% if username %}
+      <span class="me-3">Welcome, <strong>{{ username }}</strong></span>
+      <a href="/view_cart/{{ username }}/" class="btn btn-outline-success me-2">My Cart</a>
+      <a href="/logout/" class="btn btn-outline-danger">Logout</a>
+      {% else %}
+      <a href="/select_user/" class="btn btn-outline-primary me-2">Login</a>
+      <button class="btn btn-outline-secondary" disabled>My Cart</button>
+      {% endif %}
+    </div>
+  </div>
+</nav>
+
+
+  <!-- About Us -->
+ <section id="about" class="container mt-5">
+  <h2 class="heading">About <span class="text-success">Us</span></h2>
+  <div class="row align-items-center">
+    <div class="col-md-6" data-aos="fade-right">
+      <h4>Power House Fitness</h4>
+      <p>
+        At <strong>Power House Fitness</strong>, we believe that fitness is more than just a routine – 
+        it’s a lifestyle. We are dedicated to being your trusted partner on your fitness journey by 
+        providing high-quality gym equipment, personal workout gear, and resources that make health 
+        and fitness accessible to everyone. Whether you’re a beginner taking the first step or a 
+        professional athlete, we’re here to support you every step of the way.
+      </p>
+
+      <h4>Our Story</h4>
+      <p>
+        Founded with a vision to inspire healthier living, <strong>Power House Fitness</strong> started 
+        as a small idea born out of passion for fitness and well-being. Over the years, this passion 
+        has grown into a thriving community of fitness enthusiasts, trainers, and everyday individuals 
+        who share one common goal – achieving a stronger and healthier version of themselves.  
+        What makes us unique is our commitment to not just selling products, but building lasting 
+        relationships with our customers by motivating and guiding them towards their goals.
+      </p>
+
+      <h4>What We Offer</h4>
+      <p>
+        Our wide range of fitness products includes <strong>premium gym equipment, strength-training 
+        tools, cardio accessories, and personal gear</strong> that are designed to enhance your 
+        performance and results. Every item is handpicked to ensure top quality, durability, and 
+        affordability. Whether you’re setting up a home gym, upgrading your workout routine, or 
+        looking for reliable gear, you can count on us for the best choices.  
+        We don’t just provide products – we provide the foundation for strength, endurance, and 
+        long-term health.
+      </p>
+
+      <h4>Why Choose Us?</h4>
+      <p>
+        ✔ High-quality, reliable fitness equipment  
+        ✔ Affordable prices without compromising on durability  
+        ✔ Customer-first approach with friendly support  
+        ✔ Products suitable for beginners, professionals, and gyms  
+        ✔ A growing fitness community that motivates and inspires  
+      </p>
+    </div>
+
+    <div class="col-md-6" data-aos="fade-left">
+      <img src="{% static 'aboutus.gym.jpg' %}" alt="About Us" class="img-fluid rounded shadow-lg">
+
+    </div>
+  </div>
+</section>
+
+
+  <!-- Footer -->
+  <footer class="mt-5">
+    <div class="social">
+      <a href="#"><i class='bx bxl-instagram-alt'></i></a>
+      <a href="#"><i class='bx bxl-facebook-square'></i></a>
+      <a href="#"><i class='bx bxl-twitter'></i></a>
+    </div>
+    <p class="copyright">
+      &copy; Power House Fitness 2024 - All Rights Reserved
+    </p>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      offset: 200,
+      duration: 1000,
+    });
+  </script>
+</body>
+
+</html>

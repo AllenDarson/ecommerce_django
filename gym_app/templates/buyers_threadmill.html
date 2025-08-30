@@ -1,0 +1,324 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="{% static 'gym logo.png' %}">
+    <title>Power House Fitness - Threadmills & Walkpads</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- AOS + Boxicons -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .navbar-brand span {
+            color: #198754;
+            font-weight: bold;
+        }
+
+        footer {
+            background: #222;
+            color: #ddd;
+            padding: 20px;
+            text-align: center;
+        }
+
+        footer .social a {
+            color: #ddd;
+            margin: 0 10px;
+            font-size: 24px;
+        }
+
+        footer .social a:hover {
+            color: #198754;
+        }
+        .review-card {
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      height: 100%; /* ensures equal card height */
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .review-img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-bottom: 15px;
+    }
+    .review-name {
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+    .review-text {
+      font-size: 0.9rem;
+      color: #6c757d;
+    }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-4 fixed-top">
+        <a class="navbar-brand fw-bold" href="/">Power House <span>Fitness</span></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav me-3">
+                <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Services
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="servicesDropdown">
+                        <li><a class="dropdown-item" href="/buyerproduct">All Products</a></li>
+                        <li><a class="dropdown-item" href="#">Threadmills & Walkpads</a></li>
+                        <li><a class="dropdown-item" href="/gymweight">Gym Weights</a></li>
+                        <li><a class="dropdown-item" href="/personalgears">Personal Gears</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="/contact">Contact us</a></li>
+            </ul>
+
+            <div>
+                {% if username %}
+                <span class="me-3">Welcome, <strong>{{ username }}</strong></span>
+                <a href="/view_cart/{{ username }}/" class="btn btn-outline-success me-2">My Cart</a>
+                <a href="/logout/" class="btn btn-outline-danger">Logout</a>
+                {% else %}
+                <a href="/select_user/" class="btn btn-outline-primary me-2">Login</a>
+                <button class="btn btn-outline-secondary" disabled>My Cart</button>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- Spacer for fixed navbar -->
+    <div style="margin-top: 80px;"></div>
+     <!-- Mobile-Friendly Single Search Bar -->
+    <section class="container my-3">
+  <form action="/search/" method="GET" class="d-flex justify-content-center">
+    <div class="input-group" style="max-width: 500px;">
+      <span class="input-group-text bg-white border border-success rounded-start">
+        <i class='bx bx-search'></i>
+      </span>
+      <input 
+        type="text" 
+        name="query" 
+        class="form-control border border-success rounded-end" 
+        placeholder="Search For 60+ Sports and 6000+ Products"
+      >
+    </div>
+  </form>
+</section>
+
+    <!-- Threadmills & Walkpads Section -->
+   <!-- Threadmills & Walkpads Section -->
+<section id="threadmills-walkpads" class="container mt-5 pt-5">
+  <h2 class="text-center mb-4">
+    Threadmills & <span class="text-success">Walkpads</span>
+  </h2>
+
+  <div class="row">
+    {% for product in products %}
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4 d-flex">
+      <div class="card h-100 shadow-sm border-0 d-flex flex-column w-100">
+        
+        <!-- Clickable product area (opens modal) -->
+        <div data-bs-toggle="modal" data-bs-target="#productModal{{ product.product_id }}" style="cursor:pointer;">
+          {% if product.image %}
+          <img src="{{ product.image.url }}" 
+               class="card-img-top p-3" 
+               style="height:200px; object-fit:contain;" 
+               alt="{{ product.product_name }}">
+          {% else %}
+          <img src="https://via.placeholder.com/250x200.png?text=No+Image" 
+               class="card-img-top p-3" 
+               style="height:200px; object-fit:contain;" 
+               alt="No Image">
+          {% endif %}
+
+          <div class="card-body text-center">
+            <h6 class="fw-bold">{{ product.product_name }}</h6>
+             <p class="small mb-1"><strong>Brand:</strong> {{ product.product_brand }}</p>
+            <p class="text-muted small">{{ product.description|truncatechars:50 }}</p>
+            <h5>
+              <span class="text-muted text-decoration-line-through">
+                ₹{% widthratio product.price 85 100 %}
+              </span>
+              <span class="text-success fw-bold">₹{{ product.price }}</span>
+              <small class="text-danger">15% OFF</small>
+            </h5>
+          </div>
+        </div>
+
+        <!-- Buttons at the bottom -->
+        <div class="mt-auto px-3 pb-3">
+          {% if username %}
+          <a href="/add_to_cart/{{ username }}/{{ product.product_id }}/" class="btn btn-outline-success w-100 mb-2">Add to Cart</a>
+          <a href="/buy_now/{{ username }}/{{ product.product_id }}/" class="btn btn-warning w-100">Buy Now</a>
+          {% else %}
+          <a href="/select_user/{{ product.product_id }}/" class="btn btn-primary w-100">Login to Buy</a>
+          {% endif %}
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="productModal{{ product.product_id }}" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+          <div class="modal-header">
+            <h5 class="modal-title">{{ product.product_name }}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+
+          <div class="modal-body">
+            <p><strong>Description:</strong> {{ product.description }}</p>
+          </div>
+
+          <div class="modal-footer">
+            {% if username %}
+            <a href="/add_to_cart/{{ username }}/{{ product.product_id }}/" class="btn btn-outline-success">Add to Cart</a>
+            <a href="/buy_now/{{ username }}/{{ product.product_id }}/" class="btn btn-warning">Buy Now</a>
+            {% else %}
+            <a href="/select_user/{{ product.product_id }}/" class="btn btn-primary">Login to Buy</a>
+            {% endif %}
+          </div>
+
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+    <!-- Reviews Section -->
+  <section id="review" class="container my-5">
+  <h2 class="text-center mb-5">
+Customers say</h2>
+
+  <div id="reviewCarousel" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+
+      <!-- Slide 1 -->
+      <div class="carousel-item active">
+        <div class="row justify-content-center">
+          <div class="col-md-4 mb-3 d-flex">
+            <div class="card review-card text-center w-100">
+              <!-- <img src="./1.jpg" alt="John" class="review-img mx-auto"> -->
+              <h5 class="review-name">Dharani Dharan</h5>
+              <div class="text-warning mb-2">
+                <i class='bx bxs-star'></i><i class='bx bxs-star'></i>
+                <i class='bx bxs-star'></i><i class='bx bxs-star'></i>
+                <i class='bx bxs-star'></i>
+              </div>
+              <p class="review-text">I'm extremely happy with the PowerMax JogPad-2. The product is excellent — compact, sturdy, and perfect for daily use. It's reasonably priced and offers great value for money. What impressed me the most was the customer service. Their team responded quickly to my queries and even called me personally to guide me step-by-step on how to operate the machine. Overall, a fantastic experience! Highly recommended for anyone looking for a reliable and budget-friendly treadmill.</p>
+            </div>
+          </div>
+
+          <div class="col-md-4 mb-3 d-flex">
+            <div class="card review-card text-center w-100">
+              <!-- <img src="./2.jpg" alt="Steve" class="review-img mx-auto"> -->
+              <h5 class="review-name">Riya</h5>
+              <div class="text-warning mb-2">
+                <i class='bx bxs-star'></i><i class='bx bxs-star'></i>
+                <i class='bx bxs-star'></i><i class='bx bxs-star'></i>
+                <i class='bx bx-star'></i>
+              </div>
+              <p class="review-text">Ideal for treadmill desk . Slim , works straight off the box , flawless , noiseless . Great value for money if you want to work and keep your lower body mobile at the same time .
+Arrived on time in good packaging . Worked off the package with zero issues . I use it with a standing desk . Build quality seems good .
+Customer image</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2 -->
+      <div class="carousel-item">
+        <div class="row justify-content-center">
+          <div class="col-md-4 mb-3 d-flex">
+            <div class="card review-card text-center w-100">
+              <!-- <img src="./3.jpg" alt="David" class="review-img mx-auto"> -->
+              <h5 class="review-name">Ravi</h5>
+              <div class="text-warning mb-2">
+                <i class='bx bxs-star'></i><i class='bx bxs-star'></i>
+                <i class='bx bxs-star'></i><i class='bx bxs-star'></i>
+                <i class='bx bxs-star'></i>
+              </div>
+              <p class="review-text">I received the Lifelong brand treadmill last month, and it's been performing exceptionally well. The build quality is excellent, the motor runs quietly, and overall, it's far better than other treadmills I’ve used in the past based on my personal experience.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Controls -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#reviewCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon bg-dark rounded-circle p-2"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#reviewCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon bg-dark rounded-circle p-2"></span>
+    </button>
+  </div>
+</section>
+
+
+
+    <!-- Footer -->
+    <footer>
+        <div class="social">
+            <a href="#"><i class='bx bxl-instagram-alt'></i></a>
+            <a href="#"><i class='bx bxl-facebook-square'></i></a>
+            <a href="#"><i class='bx bxl-linkedin-square'></i></a>
+        </div>
+        <p class="copyright">
+            &copy; Power House Fitness 2024 - All Rights Reserved
+        </p>
+    </footer>
+
+
+        <!-- Controls -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#reviewCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon bg-dark rounded-circle p-2"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#reviewCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon bg-dark rounded-circle p-2"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</section>
+
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            offset: 200,
+            duration: 1000,
+        });
+    </script>
+</body>
+
+</html>

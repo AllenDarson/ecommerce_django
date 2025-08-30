@@ -1,0 +1,393 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="{% static 'gym logo.png' %}">
+    <title>Power House Fitness - Shop</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- AOS + Boxicons -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .navbar-brand span {
+            color: #198754;
+            font-weight: bold;
+        }
+
+        .home img {
+            max-width: 100%;
+            border-radius: 12px;
+        }
+
+        footer {
+            background: #222;
+            color: #ddd;
+            padding: 20px;
+            text-align: center;
+        }
+
+        footer .social a {
+            color: #ddd;
+            margin: 0 10px;
+            font-size: 24px;
+        }
+
+        footer .social a:hover {
+            color: #198754;
+        }
+        .review-card {
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      height: 100%; /* ensures equal card height */
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .review-img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-bottom: 15px;
+    }
+    .review-name {
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+    .review-text {
+      font-size: 0.9rem;
+      color: #6c757d;
+    }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-4 fixed-top">
+        <a class="navbar-brand fw-bold" href="/">Power House <span>Fitness</span></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav me-3">
+                <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Services
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="servicesDropdown">
+                        <li><a class="dropdown-item" href="/buyerproduct">All Products</a></li>
+                        <li><a class="dropdown-item" href="/threadwalk">Threadmills & Walkpads</a></li>
+                        <li><a class="dropdown-item" href="/gymweight">Gym Weights</a></li>
+                        <li><a class="dropdown-item" href="/personalgears">Personal Gears</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="/contact">Contact us</a></li>
+            </ul>
+
+            <div>
+                {% if username %}
+                    <span class="me-3">Welcome, <strong>{{ username }}</strong></span>
+                    <a href="/view_cart/{{ username }}/" class="btn btn-outline-success me-2">My Cart</a>
+                    <a href="/logout/" class="btn btn-outline-danger">Logout</a>
+                {% else %}
+                    <a href="/select_user/" class="btn btn-outline-primary me-2">Login</a>
+                    <button class="btn btn-outline-secondary" disabled>My Cart</button>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+    <!-- Search Section -->
+<!-- Simple Bootstrap Search Section -->
+  <div style="margin-top: 80px;"></div>
+<!-- Mobile-Friendly Single Search Bar -->
+<section class="container my-3">
+  <form action="/search/" method="GET" class="d-flex justify-content-center">
+    <div class="input-group" style="max-width: 500px;">
+      <span class="input-group-text bg-white border border-success rounded-start">
+        <i class='bx bx-search'></i>
+      </span>
+      <input 
+        type="text" 
+        name="query" 
+        class="form-control border border-success rounded-end" 
+        placeholder="Search For 60+ Sports and 6000+ Products"
+      >
+    </div>
+  </form>
+</section>
+
+    <!-- Carousel -->
+    <div id="carouselExampleIndicators" class="carousel slide mt-5" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"></button>
+        </div>
+
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="{% static 'image1carosal.jpg' %}" class="d-block w-100" alt="First slide" style="height:500px; object-fit:cover;">
+                <div class="carousel-caption d-none d-md-block">
+                    <h2 class="fw-bold text-light">Transform Your Body</h2>
+                    <p>Shop the best gym equipment for your fitness journey.</p>
+                    <a href="/buyerproduct" class="btn btn-success btn-lg">Shop Now</a>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'image2carosel.jpg' %}" class="d-block w-100" alt="Second slide" style="height:500px; object-fit:cover;">
+                <div class="carousel-caption d-none d-md-block">
+                    <h2 class="fw-bold text-light">Unleash Your Strength</h2>
+                    <p>High-quality weights and personal gear just for you.</p>
+                    <a href="/gymweight" class="btn btn-warning btn-lg">Explore Weights</a>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'image3carosal.jpg' %}" class="d-block w-100" alt="Third slide" style="height:500px; object-fit:cover;">
+                <div class="carousel-caption d-none d-md-block">
+                    <h2 class="fw-bold text-light">Push Beyond Limits</h2>
+                    <p>Start your fitness journey today with our premium gear.</p>
+                    <a href="/personalgears" class="btn btn-danger btn-lg">Get Personal Gear</a>
+                </div>
+            </div>
+        </div>
+
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="home" class="container py-5">
+        <div class="row align-items-center">
+            <div class="col-md-6" data-aos="fade-right">
+                <h3 class="text-muted">Build Your</h3>
+                <h1 class="fw-bold">Dream Physique</h1>
+                <h3><span class="text-success">With Gym Gear & Equipments</span></h3>
+                <p>Push harder than yesterday if you want a different tomorrow. Get the best fitness gear and equipment here.</p>
+                <a href="/about" class="btn btn-success mt-3">About Us</a>
+            </div>
+            <div class="col-md-6 text-center" data-aos="fade-left">
+                <img src="{% static 'imagehome.jpg' %}" alt="Hero Image" class="img-fluid rounded shadow">
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+<!-- Products Section -->
+<section id="products" class="container mt-5">
+  <h2 class="text-center mb-4">Best Selling <span class="text-success">Products</span></h2>
+  <div class="row">
+    {% for product in products %}
+    <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
+      <div class="card shadow-sm border-0 h-100 d-flex flex-column">
+
+        <!-- Clickable area (opens modal) -->
+        <div style="cursor:pointer;" data-bs-toggle="modal" data-bs-target="#productModal{{ product.product_id }}">
+          {% if product.image %}
+          <img src="{{ product.image.url }}" class="card-img-top p-3" style="height:200px; object-fit:contain;" alt="{{ product.product_name }}">
+          {% else %}
+          <img src="https://via.placeholder.com/250x200.png?text=No+Image" class="card-img-top p-3" style="height:200px; object-fit:contain;" alt="No Image">
+          {% endif %}
+          <div class="card-body text-center">
+            <h6 class="card-title fw-bold">{{ product.product_name }}</h6>
+             <p class="small mb-1"><strong>Brand:</strong> {{ product.product_brand }}</p>
+            <p class="text-muted small">{{ product.description|truncatechars:50 }}</p>
+            <h5 class="mb-3">
+              <span class="text-muted text-decoration-line-through">₹{% widthratio product.price 85 100 %}</span>
+              <span class="text-success fw-bold">₹{{ product.price }}</span>
+              <small class="text-danger">15% OFF</small>
+            </h5>
+          </div>
+        </div>
+
+        <!-- Buttons (stay at bottom) -->
+        <div class="mt-auto px-3 pb-3">
+          {% if username %}
+          <a href="/add_to_cart/{{ username }}/{{ product.product_id }}/" class="btn btn-outline-success w-100 mb-2">Add to Cart</a>
+          <a href="/buy_now/{{ username }}/{{ product.product_id }}/" class="btn btn-warning w-100">Buy Now</a>
+          {% else %}
+          <a href="/select_user/{{ product.product_id }}/" class="btn btn-primary w-100">Login to Buy</a>
+          {% endif %}
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="productModal{{ product.product_id }}" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Product Name: {{ product.product_name }}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <p><strong>Description:</strong> {{ product.description }}</p>
+          </div>
+          <div class="modal-footer">
+            {% if username %}
+            <a href="/add_to_cart/{{ username }}/{{ product.product_id }}/" class="btn btn-outline-success">Add to Cart</a>
+            <a href="/buy_now/{{ username }}/{{ product.product_id }}/" class="btn btn-warning w-100">Buy Now</a>
+            {% else %}
+            <a href="/select_user/{{ product.product_id }}/" class="btn btn-primary">Login to Buy</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+<!-- Reviews Section -->
+  <section id="review" class="container my-5">
+  <h2 class="text-center mb-5">
+Customers say</h2>
+
+  <div id="reviewCarousel" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+
+      <!-- Slide 1 -->
+      <div class="carousel-item active">
+        <div class="row justify-content-center">
+          <div class="col-md-4 mb-3 d-flex">
+            <div class="card review-card text-center w-100">
+              <!-- <img src="./1.jpg" alt="John" class="review-img mx-auto"> -->
+              <h5 class="review-name">Arun Kumar</h5>
+              <div class="text-warning mb-2">
+                <i class='bx bxs-star'></i><i class='bx bxs-star'></i>
+                <i class='bx bxs-star'></i><i class='bx bxs-star'></i>
+                <i class='bx bxs-star'></i>
+              </div>
+              <p class="review-text">The bottle is very nice at a low price. Children can mix milk, protein, Horlicks and everything in it and eat it well. I like it a lot.✨</p>
+            </div>
+          </div>
+
+          <div class="col-md-4 mb-3 d-flex">
+            <div class="card review-card text-center w-100">
+              <!-- <img src="./2.jpg" alt="Steve" class="review-img mx-auto"> -->
+              <h5 class="review-name">Gokul</h5>
+              <div class="text-warning mb-2">
+                <i class='bx bxs-star'></i><i class='bx bxs-star'></i>
+                <i class='bx bxs-star'></i><i class='bx bxs-star'></i>
+                <i class='bx bx-star'></i>
+              </div>
+              <p class="review-text">The gloves are superb, very lightweight, has an good padding , useful yo lift dumbles. It will stop injury to fingers. It has lot of comfort and has enhanced grip to hold dumbles. </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2 -->
+      <div class="carousel-item">
+        <div class="row justify-content-center">
+          <div class="col-md-4 mb-3 d-flex">
+            <div class="card review-card text-center w-100">
+              <!-- <img src="./3.jpg" alt="David" class="review-img mx-auto"> -->
+              <h5 class="review-name">Rahul</h5>
+              <div class="text-warning mb-2">
+                <i class='bx bxs-star'></i><i class='bx bxs-star'></i>
+                <i class='bx bxs-star'></i><i class='bx bxs-star'></i>
+                <i class='bx bxs-star'></i>
+              </div>
+              <p class="review-text">This knee support gave me an extra support and The material is breathable and comfortable even on longer runs. Honestly it’s made a big difference in my running and daily routine just go for it if you love running.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Controls -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#reviewCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon bg-dark rounded-circle p-2"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#reviewCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon bg-dark rounded-circle p-2"></span>
+    </button>
+  </div>
+</section>
+
+<!-- Contact Section -->
+  <section id="contact" class="container mb-2">
+    <h2 class="text-center fw-bold">Stay in <span class="text-success">Touch</span></h2>
+    <div class="row g-4">
+      <!-- Contact Info -->
+      <div class="col-md-6" data-aos="fade-right">
+        <div class="p-4 rounded shadow-sm bg-white h-100">
+          <p class="mb-4">We are here to answer any questions you may have about our services. Reach out to us!</p>
+          <ul class="list-unstyled fs-6">
+            <li class="mb-3"><i class='bx bxs-map me-2 text-success'></i>Umapathi Towers - 72 Lakshmipuram, Peelamedu, Coimbatore</li>
+            <li class="mb-3"><i class='bx bxs-phone me-2 text-success'></i><a href="tel:+918760961525" class="text-muted">+91 8760961525</a></li>
+            <li class="mb-3"><i class='bx bxs-envelope me-2 text-success'></i><a href="mailto:allendarson27@gmail.com" class="text-muted">servicesector.powerhouseshop@gmail.com</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Contact Form -->
+      <div class="col-md-6" data-aos="fade-left">
+        <div class="card shadow-lg border-0 p-4 bg-light rounded-4">
+          <form method="POST" action="/contact/submit/">
+            {% csrf_token %}
+            <input type="text" class="form-control mb-3 rounded-pill border-success" name="name" placeholder="Your Name" required>
+            <input type="email" class="form-control mb-3 rounded-pill border-success" name="email" placeholder="Your Email" required>
+            <select class="form-select mb-3 rounded-pill border-success" name="service" required>
+              <option value="">Our Products</option>
+              <option value="Threadmills & Walkpads">Threadmills & Walkpads</option>
+              <option value="Gym Weights">Gym Weights</option>
+              <option value="Personal Gears">Personal Gears</option>
+            </select>
+            <textarea class="form-control mb-3 rounded-3 border-success" name="message" rows="5" placeholder="Your message or product inquiry" required></textarea>
+            <button type="submit" class="btn btn-success w-100 py-2 fw-bold shadow-sm"><i class='bx bx-send'></i> Send Message</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+
+    <!-- Footer -->
+    <footer>
+        <div class="social mb-2">
+            <a href="#"><i class='bx bxl-instagram-alt'></i></a>
+            <a href="#"><i class='bx bxl-facebook-square'></i></a>
+            <a href="#"><i class='bx bxl-linkedin-square'></i></a>
+        </div>
+        <p class="mb-0">&copy; Power House Fitness 2024 - All Rights Reserved</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            offset: 200,
+            duration: 1000,
+        });
+    </script>
+</body>
+
+</html>
