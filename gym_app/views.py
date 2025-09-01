@@ -164,28 +164,23 @@ def delete_from_cart(request, uname, product_id):
     return redirect(f'/view_cart/{uname}/')
 ###################################################################################################################################################
 def buy_now(request, username, product_id):
-    # Get the product
-    product = get_object_or_404(Product_add, product_id=product_id)
+   
+    product = get_object_or_404(Product_vendor, product_id=product_id)
 
-    # Get the actual user's email from the database
-    user = get_object_or_404(User, username=username)  # or Buyer.objects.get(username=username)
-    user_email = user.email  # this is the actual email
+    user = get_object_or_404(User, username=username)
+    user_email = user.email
 
-    # If order not confirmed, show confirmation page
     if "confirm" not in request.GET:
         return render(request, "buyers_conform.html", {"product": product, "username": username})
-
-    # Send confirmation email to the actual email
+    
     send_mail(
         "Order Confirmation",
         f"Hello {username}, your order for {product.product_name} is confirmed. "
         "Thank you for buying. You will get it in 7 days.",
-        "allendarson27@gmail.com",  # sender email
-        [user_email],  # actual user's email
+        "allendarson27@gmail.com",  
+        [user_email],
         fail_silently=True
     )
-
-    # Show order complete page
     return render(request, "buyers_complete.html", {"product": product, "username": username})
 
 def contact_submit(request):
