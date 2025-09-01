@@ -127,17 +127,19 @@ def signup(request):
 
 def logins(request):
     if request.method == 'POST':
-        uname = request.POST['username']
-        pwd = request.POST['password']
+        uname = request.POST.get('username')
+        pwd = request.POST.get('password')
 
         user = authenticate(username=uname, password=pwd)
-        if user is not None and user.role == "buyer":
-        # if user is not None:
+
+        if user is not None:
             login(request, user)
             return redirect('home', username=uname)
         else:
+            # This handles invalid login
             return render(request, 'buyers_login.html', {'error': 'Invalid username or password'})
-    
+
+    # This handles GET requests
     return render(request, 'buyers_login.html')
 
 def user_logout(request):

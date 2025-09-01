@@ -13,12 +13,12 @@ urlpatterns = [
     path('add_product',add_product_by_admin),
     path('all_product',added_products),
 ######################################################################################################################
-    path('', buyer_home, name='root'),
-    path('home/<str:username>/', buyer_home, name='home'),
-    path('select_user/', select_user_type, name='select_user'),
-    path('signup/', signup, name='signup'),
-    path('login/', logins, name='login'),
-    path('logout/',user_logout, name='logout'),
+    path('', buyer_home),
+    path('home/<str:username>/', buyer_home),
+    path('select_user/', select_user_type),
+    path('signup/', signup),
+    path('login/', logins),
+    path('logout/',user_logout),
     
     path('add_to_cart/<str:uname>/<int:pid>/', add_to_carts),
     path('view_cart/<str:uname>/', view_cart),
