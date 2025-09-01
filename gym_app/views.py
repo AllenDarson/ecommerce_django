@@ -5,6 +5,14 @@ from django.shortcuts import redirect, render
 from gym_app.models import AdminUsers, Buyer, Cart, Carts, Product_add
 from .models import Order, Product_add, Product_vendor, Staff, Vendor
 
+from django.shortcuts import render, get_object_or_404
+from django.core.mail import send_mail
+
+from django.contrib.auth import authenticate, login  ,logout 
+from django.contrib.auth.models import User
+
+from django.contrib import messages
+
 # Create your views here.
 def home(request):
     return render(request,'home.html')
@@ -86,10 +94,7 @@ def add_product_by_admin(request):
 def added_products(request):
     all_products = Product_vendor.objects.all()
     return render(request, "added_products.html", {'products': all_products})
-####################################################################################################################################
-from django.contrib.auth import authenticate, login  ,logout 
-from django.contrib.auth.models import User
-
+###################################################################################################################################################
 def buyer_home(request, username=None):
     best_selling_products = Product_vendor.objects.filter(category="Best Selling")
     return render(request, 'buyers_home.html', {
@@ -120,14 +125,14 @@ def signup(request):
 
     return render(request, 'buyers_signin.html')
 
-
 def logins(request):
     if request.method == 'POST':
         uname = request.POST['username']
         pwd = request.POST['password']
 
         user = authenticate(username=uname, password=pwd)
-        if user is not None:
+        if user is not None and user.role == "buyer":
+        # if user is not None:
             login(request, user)
             return redirect('home', username=uname)
         else:
@@ -135,11 +140,10 @@ def logins(request):
     
     return render(request, 'buyers_login.html')
 
-
 def user_logout(request):
     logout(request)  # clears the session
     return redirect('login')  # redirect to homepage (or login page)
-#####################################################################################################################
+####################################################################################################################################################
 def add_to_carts(request, uname, pid):
     buyer = Buyer.objects.get(username=uname)
     product = Product_vendor.objects.get(product_id=pid)
@@ -156,10 +160,7 @@ def delete_from_cart(request, uname, product_id):
     if request.method == 'POST':
         Carts.objects.filter(buyer_name=uname, product_id=product_id).delete()
     return redirect(f'/view_cart/{uname}/')
-
-from django.shortcuts import render, get_object_or_404
-from django.core.mail import send_mail
-
+###################################################################################################################################################
 def buy_now(request, username, product_id):
     # Get the product
     product = get_object_or_404(Product_add, product_id=product_id)
@@ -185,7 +186,28 @@ def buy_now(request, username, product_id):
     # Show order complete page
     return render(request, "buyers_complete.html", {"product": product, "username": username})
 
-#############################################################################################################################
+def contact_submit(request):
+    if request.method == "POST":
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        service = request.POST.get('service')
+        message_text = request.POST.get('message')
+
+        # Email content
+        subject = f"New Contact Request: {service}"
+        message = f"Name: {name}\nEmail: {email}\nService: {service}\nMessage:\n{message_text}"
+        from_email = 'allendarson27@gmail.com'   # Replace with your email
+        recipient_list = [email]  # Replace with admin email(s)
+
+        # Send email
+        send_mail(subject, message, from_email, recipient_list)
+
+        # Success message
+        messages.success(request, "Your message has been successfully submitted. We’ll respond as soon as possible.")
+
+        return redirect(buyers_contact)
+
+###################################################################################################################################################
 def buyers_about(request):
     return render(request,'buyers_about.html',{
         'username': request.user.username if request.user.is_authenticated else None
@@ -250,7 +272,7 @@ def find_product(request):
         'query': query,
         'username': request.user.username if request.user.is_authenticated else None
     })
-###########################################################################################################################
+###################################################################################################################################################
 def vendors_home(request):
     return render(request, 'vendors.html')
 
@@ -302,15 +324,8 @@ def vendor_login(request):
 
     return render(request, 'vendors_login.html')
 
-
 def vendor_dashboard(request):
-    # if not request.user.is_authenticated:
-    #     return redirect('vendor_login')
-
     vendor = Vendor.objects.filter(vendor_id=request.user.username).first()
-    # if not vendor:
-    #     return redirect('vendor_login')
-
     products = Product_vendor.objects.filter(vendor_id=vendor.id)
 
     return render(request, 'vendor_dashboard.html', {
@@ -371,6 +386,7 @@ def add_product_by_Vendor(request):
 
     return render(request, 'vendors_add.html')
 
+
 def getupdate(request, product_id):
     product = Product_vendor.objects.get(product_id=product_id)
     return render(request, 'vendors_update.html', {'product': product})
@@ -393,7 +409,7 @@ def update_vendor_products(request, product_id):
 def delete_vendor_product(request, product_id):
     Product_vendor.objects.filter(product_id=product_id).delete()
     return redirect(vendor_dashboard)
-#########################################################################################################################
+####################################################################################################################################################
 def staff_home(request):
     return render(request, 'staff_home.html')  # shows options
 
@@ -433,30 +449,7 @@ def delete_staff(request, staff_id):
     Staff.objects.filter(staff_id=staff_id).delete()
     return redirect('/staff/list/')
 
-from django.contrib import messages
 
-def contact_submit(request):
-    if request.method == "POST":
-        name = request.POST.get('name')
-        email = request.POST.get('email')
-        service = request.POST.get('service')
-        message_text = request.POST.get('message')
-
-        # Email content
-        subject = f"New Contact Request: {service}"
-        message = f"Name: {name}\nEmail: {email}\nService: {service}\nMessage:\n{message_text}"
-        from_email = 'allendarson27@gmail.com'   # Replace with your email
-        recipient_list = [email]  # Replace with admin email(s)
-
-        # Send email
-        send_mail(subject, message, from_email, recipient_list)
-
-        # Success message
-        messages.success(request, "Your message has been successfully submitted. We’ll respond as soon as possible.")
-
-        return redirect(buyers_contact)
-    
-    #return redirect(contact_submit)
 def staff_admin_products(request):
     admin_products = Product_vendor.objects.filter(vendor_id="")  # use "" if empty string for admin products
     return render(request, 'staff_view.html', {
@@ -495,5 +488,5 @@ def users_products(request):
     for order in Order.objects.all():
         user_orders[order.username].append(order)
     return render(request, 'admin_userorders.html', {'user_orders_dict': user_orders})
-
+###################################################################################################################################################
     
