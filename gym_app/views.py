@@ -38,7 +38,7 @@ def admin_signup(request):
 
         # Save admin user
         AdminUsers.objects.create(name=name, email=email, password=password)
-        return redirect('adminlogin')
+        return redirect( admin_login )
     
     return render(request, 'admin_signup.html')
 
@@ -121,7 +121,7 @@ def signup(request):
 
         # auto login after signup
         login(request, user)
-        return redirect('home', username=uname)
+        return redirect(buyer_home, username=uname)
 
     return render(request, 'buyers_signin.html')
 
@@ -134,7 +134,7 @@ def logins(request):
 
         if user is not None:
             login(request, user)
-            return redirect('home', username=uname)
+            return redirect(buyer_home, username=uname)
         else:
             # This handles invalid login
             return render(request, 'buyers_login.html', {'error': 'Invalid username or password'})
@@ -144,7 +144,7 @@ def logins(request):
 
 def user_logout(request):
     logout(request)  # clears the session
-    return redirect('login')  # redirect to homepage (or login page)
+    return redirect(logins)  # redirect to homepage (or login page)
 ####################################################################################################################################################
 def add_to_carts(request, uname, pid):
     buyer = Buyer.objects.get(username=uname)
